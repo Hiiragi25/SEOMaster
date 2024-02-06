@@ -1,9 +1,84 @@
 
+let count = 3;
+let startHidden = 3;
+const cartItem = document.querySelectorAll('.work__cart').length;
+const cartList = Array.from(document.querySelector('.work__wrapper').children);
+const cartButtonMore = document.querySelector('.serves__button');
+
 
 
 Accordion();
 MaskPhone();
+CartInform()
 Modal();
+
+
+window.addEventListener('resize',(e) =>{
+     const widthContent = document.body.clientWidth;
+  
+       if(widthContent < 650){
+             getServesHidden();
+              cartButtonMore.style.display = 'block';
+              getServesShow();
+       }
+       else {
+             getServesShowAll();
+               cartButtonMore.style.display = 'none';
+       }
+  })
+
+
+// let CONTENT_CART = [
+
+//     {
+//       "id": 1,
+//       "title" : "Работа над сайтом по чистке территории",
+//       "imgOne" : "none",
+//       "error" : {
+//          'title' : "Нет аптимизации кода",
+//          'title' : "Не прописаны мета теги",
+//          'title' : "Не оптимизированны картинки"
+
+//       }
+
+//     },
+//      {
+//       'id': 2,
+//       'title': 'Работа над сайтом по чистке ',
+//       'imgOne': 'none',
+//        "error" : {
+//          'title' : "Нет аптимизации кода",
+//          'title' : "Не прописаны мета теги",
+//          'title' : "Не оптимизированны картинки"
+
+//       }
+
+//     }
+
+
+
+
+
+// ]
+
+// for ( let i in CONTENT_CART  ) {
+   
+//      for ( let j in  CONTENT_CART[i].error.title) {
+//            console.log( CONTENT_CART[i].error[j])
+//      } 
+
+// }
+
+
+    
+
+
+
+
+
+
+
+
 
 
 
@@ -94,7 +169,76 @@ function MaskPhone(){
       }
   }
 
+function CartInform(){
 
+    const cartProjectAll = document.querySelectorAll('.work__cart-img');
+
+    cartProjectAll.forEach(function(items){
+      items.addEventListener('click',()=>{
+            console.log(items.getAttribute('data-cart'));
+
+         }) 
+    });
+}
+
+const MoreView = {
+
+          Hidden(startItem,cartItems,cartList){
+                 const hiddenItem  = cartList.slice(startItem,cartItems);
+                 hiddenItem.forEach(function(item) {
+                    item.classList.add('work__cart--none');
+                });
+              },
+          Show(temp,cartList,cartItems,button){
+         
+              count+=temp;
+
+              const visiItems = cartList.slice(0,count);
+            visiItems.forEach( function(items) {
+                  items.classList.add('work__cart--active');  
+                 
+                 })
+                },
+
+          ShowAll(startItem,cartItems,cartList){
+               const hiddenItem  = cartList.slice(startItem,cartItems);
+                 hiddenItem.forEach(function(item) {
+                    item.classList.remove('work__cart--none');
+                });
+          },
+          MoreButton(count,cartItems,button){
+                 if(count>cartItems) {
+                      button.classList.add('work__cart--none');
+                      
+            }
+          }
+}
+
+
+cartButtonMore.style.display = 'none';
+function getServesHidden(){
+
+  MoreView.Hidden(startHidden,cartItem,cartList);
+
+  // let servesButtonMore = `  
+      
+  //      <button> Показать ещё</button>
+
+  // `;
+   
+  
+}
+function getServesShowAll(){
+  MoreView.ShowAll(startHidden,cartItem,cartList);
+}
+function getServesShow(){
+
+    cartButtonMore.addEventListener('click',()=> {
+      MoreView.Show(count,cartList,cartItem,cartButtonMore);
+      MoreView.MoreButton(count,cartItem,cartButtonMore);
+    })
+
+}
 
 const swiperSL3 = new Swiper('.revirews__wrapper', {
   spaceBetween: 20,
